@@ -1,0 +1,33 @@
+import requests
+
+from googlesearch import search
+from bs4 import BeautifulSoup
+# link for extract html data
+def getdata(url):
+    try:
+      r = requests.get(url,timeout=10)
+    except Exception as e:
+        print("error is" +str(e)  )
+    print(r.encoding)
+    return r.text
+query="meaning of savage"
+for j in search(query, tld="co.in", num=2, start=2,stop=1):
+   print(j)
+   htmldata=getdata(j)
+
+soup = BeautifulSoup(htmldata, 'html.parser')
+data = ''
+data1=""
+for data in soup.find_all("p"):
+     if len(data1)<300:
+       data1 = data1 + str((data.get_text()))
+count=1
+for element in range(0,len(data1)):
+  if count:
+     if data1[element].isalpha() :
+       len1=element
+       print(len1)
+       print(len(data1))
+       data1=data1[len1:len(data1)]
+       count=0
+print(data1)
